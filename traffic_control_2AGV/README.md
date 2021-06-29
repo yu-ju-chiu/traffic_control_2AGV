@@ -6,7 +6,12 @@ VS code v1.57.1
 C/C++ms-vscode.cpptools v1.5.0-insiders
 
 #### 部署步驟
+1. 當前資料夾開啟terminal
+2. `$ make` 以產生traffic_control_2AGV.out
+3. `$.\traffic_control_2AGV.out`
+4. 即有執行檔
 
+#### 修改程式
 1. 開啟traffic_control_2AGV.cpp
 2. 需事先建立地圖檔案:map.txt(default為27*42 之地圖)
 3. 程式碼前方定義基本參數
@@ -28,8 +33,6 @@ C/C++ms-vscode.cpptools v1.5.0-insiders
 #define END_Y2 12
 #define END_X2 33
 ```
-
-4. 直接編譯
 
 #### V1.0.0 版本內容更新
 
