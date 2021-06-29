@@ -8,7 +8,7 @@ C/C++ms-vscode.cpptools v1.5.0-insiders
 #### 部署步驟
 1. 當前資料夾開啟terminal
 2. `$ make` 以產生traffic_control_2AGV.out
-3. `$.\traffic_control_2AGV.out`
+3. `$./traffic_control_2AGV.out`
 4. 即有執行檔
 
 #### 修改程式
