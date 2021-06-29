@@ -1,13 +1,10 @@
-all: traffic_control_2AGV.out
-
-#declare variables
-CC:=gcc
-exe:=traffic_control_2AGV
-obj:=traffic_control_2AGV.o
-
-traffic_control_2AGV: $(obj)
-  $(CC) -o $(exe) $(obj)  
+all:traffic_control_2AGV.cpp
+	g++ traffic_control_2AGV.cpp  -o  traffic_control_2AGV.out
 
 .PHONY:clean
 clean:
-  rm -rf $(obj) $(exe)
+	rm -f traffic_control_2AGV.out                    
+# #declare variables
+# CC:=gcc
+# exe:=traffic_control_2AGV
+# obj:=traffic_control_2AGV.out
