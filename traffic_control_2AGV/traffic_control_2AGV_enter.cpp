@@ -301,9 +301,10 @@ int main()
             cout << "   ";
         }
     }
-    cout << "method" << endl;
-    cin >> method;
 
+    cout << endl;
+    cout << "method(替代：1/等待：2)" << endl;
+    cin >> method;
     cout << endl;
     cout << "enter AGV1 start X" << endl;
     cin >> sx_1;
@@ -320,7 +321,7 @@ int main()
     cin >> sy_2;
     cout << "enter AGV2 end x" << endl;
     cin >> ex_2;
-    cout << "enter AGV2 start y" << endl;
+    cout << "enter AGV2 end y" << endl;
     cin >> ey_2;
 
     // two AGV setting
