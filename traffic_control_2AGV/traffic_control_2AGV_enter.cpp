@@ -45,7 +45,7 @@ int getFilecol(string fileName)
     c = file.peek();
     if (!file.is_open())
         return -1;
-    while (('\n' != c) && (!file.eof()))
+    while (( c != '\n') && (!file.eof()))
     {
         file >> tmp;
         ++count;
@@ -272,18 +272,18 @@ int main()
     if (!file.is_open())
         cout << "can't open file" << endl;
 
-    for (int i = 0; i < Y; i++)
+    for (int i = 0; i < Y_MAP; i++)
     {
-        for (int j = 0; j < X; j++)
+        for (int j = 0; j < X_MAP; j++)
         {
             file >> array[i][j];
         }
     }
     file.close();
 
-    for (int i = 0; i < Y; i++)
+    for (int i = 0; i < Y_MAP; i++)
     {
-        for (int j = 0; j < X; j++)
+        for (int j = 0; j < X_MAP; j++)
         {
             if (array[i][j] == 1)
                 cout << "X";
@@ -293,7 +293,7 @@ int main()
         cout << " " << i << endl;
     }
 
-    for (int j = 0; j < X; j++)
+    for (int j = 0; j < X_MAP; j++)
     {
         if (j % 5 == 0)
         {
@@ -374,9 +374,9 @@ int main()
         array[sy_2][sx_2] = 5;
         array[ey_2][ex_2] = 6;
 
-        for (int i = 0; i < Y; i++)
+        for (int i = 0; i < Y_MAP; i++)
         {
-            for (int j = 0; j < X; j++)
+            for (int j = 0; j < X_MAP; j++)
             {
                 if (array[i][j] == 1)
                     cout << "X";
