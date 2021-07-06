@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdlib.h>
 #include <vector>
@@ -256,6 +255,7 @@ private:
 int main()
 {
     int num_node = 0;
+    int method = 0;
     int sx_1, sy_1, ex_1, ey_1;
     int sx_2, sy_2, ex_2, ey_2;
     // input the map
@@ -301,6 +301,9 @@ int main()
             cout << "   ";
         }
     }
+    cout << "method" << endl;
+    cin >> method;
+
     cout << endl;
     cout << "enter AGV1 start X" << endl;
     cin >> sx_1;
@@ -335,7 +338,7 @@ int main()
     CPoint *head_AGV2 = new CPoint(START_Y2, START_X2);
     head_AGV2->m_parentPoint = point_AGV2;
 
-    switch (METHOD)
+    switch (method)
     {
     case 1: //alternative way
     {
