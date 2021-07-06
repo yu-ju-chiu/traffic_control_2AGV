@@ -10,7 +10,6 @@ ex:輸入
 48
 60
 41
-輸出會是這樣的路徑
+輸出會是這樣的路徑，會發現路徑走歪
 ![image](https://user-images.githubusercontent.com/38370262/124549787-3f97b400-de62-11eb-8bf9-16052af743ce.png)
-會發現路徑走歪
 
