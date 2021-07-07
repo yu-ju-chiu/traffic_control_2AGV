@@ -261,11 +261,12 @@ int main()
     // input the map
     int X = 0;
     int Y = 0;
+
     string filename{"clear_map.txt"};
     X = getFilecol(filename);
     Y = getFilerow(filename);
-    cout << "Y" << Y << endl;
-    cout << "X" << X << endl;
+    // cout << "Y" << Y << endl;
+    // cout << "X" << X << endl;
     int array[Y_MAP][X_MAP]{};
 
     ifstream file{"clear_map.txt"};
