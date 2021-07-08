@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <vector>
 #include <fstream>
+#include <math.h>
 
 #define METHOD 1
 
 using namespace std;
-#define X_MAP 66
-#define Y_MAP 53
+// #define X_MAP 66
+// #define Y_MAP 53
 
 #define START_Y1 15
 #define START_X1 18
@@ -43,9 +44,10 @@ int getFilecol(string fileName)
     int count = 0;
     char c;
     c = file.peek();
+    
     if (!file.is_open())
         return -1;
-    while (( c != '\n') && (!file.eof()))
+    while (('\r' != c) && (!file.eof()))
     {
         file >> tmp;
         ++count;
@@ -64,6 +66,7 @@ public:
     void CalcF()
     {
         F = G + H;
+        // cout << "F: " << F << endl;
     }
     int X;
     int Y;
@@ -78,19 +81,19 @@ class CAStar
 {
 public:
     // 構造函數
-    CAStar(int array[Y_MAP][X_MAP])
+    CAStar(int *array, int X,int Y)
     {
-        for (int i = 0; i < Y_MAP; ++i)
-            for (int j = 0; j < X_MAP; ++j)
+        for (int i = 0; i < Y; ++i)
+            for (int j = 0; j < X; ++j)
             {
-                m_array[i][j] = array[i][j];
+                m_array[i][j] = *(array +i*X +j);
             }
     }
 
     CPoint *GetMinFPoint()
     {
-        int idx = 0, valueF = -9999;
-        for (int i = 0; i < m_openVec.size(); ++i)
+        int idx = 0, valueF = 9999;
+        for (int i = 0; i < m_openVec.size(); i++)
         {
             if (m_openVec[i]->F < valueF)
             {
@@ -189,22 +192,25 @@ public:
     {
         point->m_parentPoint = tmpStart;
         point->G = CalcG(tmpStart, point);
-        point->G = CalcH(end, point);
+        point->H = CalcH(end, point);
         point->CalcF();
         m_openVec.push_back(point);
     }
 
     int CalcG(CPoint *start, CPoint *point)
     {
-        int G = (abs(point->X - start->X) + abs(point->Y - start->Y)) == 2 ? STEP : OBLIQUE;
+
+        int G = (abs(point->X - start->X) + abs(point->Y - start->Y)) == 1 ? STEP : OBLIQUE;
         int parentG = point->m_parentPoint != NULL ? point->m_parentPoint->G : 0;
+        // cout << "G + parentG: " << G + parentG << endl;
         return G + parentG;
     }
 
     int CalcH(CPoint *end, CPoint *point)
     {
-        int step = abs(point->X - end->X) + abs(point->Y - end->Y);
-        return STEP * step;
+        double step = sqrt(pow(abs(point->X - end->X), 2) + pow(abs(point->Y - end->Y), 2));
+        // cout << "step * STEP " << step * STEP << endl;
+        return step * STEP;
     }
 
     // 搜索路徑
@@ -243,7 +249,7 @@ public:
     }
 
 private:
-    int m_array[Y_MAP][X_MAP];
+    int m_array[1000][1000];
     static const int STEP = 10;
     static const int OBLIQUE = 14;
 
@@ -254,6 +260,7 @@ private:
 
 int main()
 {
+    cout<<"auto find the size of txt"<<endl;
     int num_node = 0;
     int method = 0;
     int sx_1, sy_1, ex_1, ey_1;
@@ -261,30 +268,30 @@ int main()
     // input the map
     int X = 0;
     int Y = 0;
-
     string filename{"clear_map.txt"};
     X = getFilecol(filename);
     Y = getFilerow(filename);
-    // cout << "Y" << Y << endl;
-    // cout << "X" << X << endl;
-    int array[Y_MAP][X_MAP]{};
+    cout << "X" << X << endl;
+    cout << "Y" << Y << endl;
+
+    int array[Y][X]{};
 
     ifstream file{"clear_map.txt"};
     if (!file.is_open())
         cout << "can't open file" << endl;
 
-    for (int i = 0; i < Y_MAP; i++)
+    for (int i = 0; i < Y; i++)
     {
-        for (int j = 0; j < X_MAP; j++)
+        for (int j = 0; j < X; j++)
         {
             file >> array[i][j];
         }
     }
     file.close();
 
-    for (int i = 0; i < Y_MAP; i++)
+    for (int i = 0; i < Y; i++)
     {
-        for (int j = 0; j < X_MAP; j++)
+        for (int j = 0; j < X; j++)
         {
             if (array[i][j] == 1)
                 cout << "X";
@@ -294,7 +301,7 @@ int main()
         cout << " " << i << endl;
     }
 
-    for (int j = 0; j < X_MAP; j++)
+    for (int j = 0; j < X; j++)
     {
         if (j % 5 == 0)
         {
@@ -304,7 +311,7 @@ int main()
     }
 
     cout << endl;
-    cout << "method(替代：1/等待：2)" << endl;
+    cout << "method(Alternative:1/Waiting:2)" << endl;
     cin >> method;
     cout << endl;
     cout << "enter AGV1 start X" << endl;
@@ -324,9 +331,17 @@ int main()
     cin >> ex_2;
     cout << "enter AGV2 end y" << endl;
     cin >> ey_2;
-
+    // method = 1;
+    // sx_1 = 5;
+    // sy_1 = 50;
+    // ex_1 = 4;
+    // ey_1 = 46;
+    // sx_2 = 60;
+    // sy_2 = 48;
+    // ex_2 = 60;
+    // ey_2 = 41;
     // two AGV setting
-    CAStar *pAStar_AGV1 = new CAStar(array);
+    CAStar *pAStar_AGV1 = new CAStar(*array, X, Y);
     CPoint *start_AGV1 = new CPoint(sy_1, sx_1);
     CPoint *end_AGV1 = new CPoint(ey_1, ex_1);
     CPoint *point_AGV1 = pAStar_AGV1->FindPath(start_AGV1, end_AGV1, false);
@@ -335,7 +350,7 @@ int main()
 
     CPoint *start_AGV2 = new CPoint(sy_2, sx_2);
     CPoint *end_AGV2 = new CPoint(ey_2, ex_2);
-    CAStar *pAStar_AGV2 = new CAStar(array);
+    CAStar *pAStar_AGV2 = new CAStar(*array, X, Y);
     CPoint *point_AGV2 = pAStar_AGV2->FindPath(start_AGV2, end_AGV2, false);
     CPoint *head_AGV2 = new CPoint(START_Y2, START_X2);
     head_AGV2->m_parentPoint = point_AGV2;
@@ -358,7 +373,7 @@ int main()
         array[sy_1][sx_1] = 3;
         array[ey_1][ex_1] = 4;
 
-        CAStar *pAStar_AGV2_alter = new CAStar(array);
+        CAStar *pAStar_AGV2_alter = new CAStar(*array,X ,Y);
         point_AGV2 = pAStar_AGV2_alter->FindPath(start_AGV2, end_AGV2, false);
 
         num_node = 0;
@@ -375,9 +390,9 @@ int main()
         array[sy_2][sx_2] = 5;
         array[ey_2][ex_2] = 6;
 
-        for (int i = 0; i < Y_MAP; i++)
+        for (int i = 0; i < Y; i++)
         {
-            for (int j = 0; j < X_MAP; j++)
+            for (int j = 0; j < X; j++)
             {
                 if (array[i][j] == 1)
                     cout << "X";
